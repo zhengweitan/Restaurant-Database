@@ -1,0 +1,344 @@
+ALTER SESSION SET NLS_DATE_FORMAT='DD-MON-YYYY';
+
+DROP TABLE cust CASCADE CONSTRAINT;
+DROP TABLE outlet CASCADE CONSTRAINT;
+DROP TABLE staff CASCADE CONSTRAINT;
+DROP TABLE item CASCADE CONSTRAINT;
+DROP TABLE ord CASCADE CONSTRAINT;
+DROP TABLE ord_line CASCADE CONSTRAINT;
+DROP TABLE rating CASCADE CONSTRAINT;
+DROP TABLE vehicle CASCADE CONSTRAINT;
+DROP TABLE edetails CASCADE CONSTRAINT;
+DROP TABLE econduct CASCADE CONSTRAINT;
+
+
+CREATE TABLE cust (
+    Cust_num VARCHAR(8) PRIMARY KEY,
+    Title VARCHAR(2) CONSTRAINT ctitle CHECK(Title IN ('Mr','Ms')),
+    Phone_no VARCHAR(11),
+    Fname VARCHAR(10) NOT NULL,
+    Lname VARCHAR(10) NOT NULL,
+    Street VARCHAR(50),
+    Suburb VARCHAR(20),
+    Postcode NUMBER(5),
+    Married_to VARCHAR(8) NULL
+);
+
+INSERT INTO cust VALUES ('C01', 'Ms', 60143678765,  'Lee Ping', 'Chan', '54 Jalan Jaya 5', 'Seri Kembangan', 43300, 'C04');
+INSERT INTO cust VALUES ('C02', 'Ms', 60142678899,	'Su Li', 'Yip',	'10 Jalan MU 4/2',	'Puchong', 47110, null);
+INSERT INTO cust VALUES ('C03',	'Ms', 60123984908,	'Mee Lim', 'Lau', '23 Jalan USJ 4/6', 'Subang Jaya', 47600, null);
+INSERT INTO cust VALUES ('C04',	'Mr', 60177534163,	'Sa Pum', 'Yip', '5 Jalan USJ 2/3',	'Subang Jaya', 47600, 'C01');
+INSERT INTO cust VALUES ('C05',	'Ms', 60189878878,	'Mei Mei', 'Chen', '3 Jalan Abadi 1/20', 'Puchong',	47110, 'C08');
+INSERT INTO cust VALUES ('C06',	'Ms', 60135469901,	'Ho Ling', 'Chin', '1 Jalan Bukit Raja 5/1', 'Shah Alam', 40160, null);
+INSERT INTO cust VALUES ('C07',	'Ms', 60143556555,	'Chooi Peng', 'Lim', '43 Jalan Bintang 8/2', 'Kelana Jaya',	47300, 'C15');
+INSERT INTO cust VALUES ('C08',	'Mr', 60163512828,	'Yee Hong',	'Ling',	'23 Jalan Raya 4/D', 'Subang Jaya',	47600, 'C05');
+INSERT INTO cust VALUES ('C09',	'Ms', 60166623648,	'Ke Lee', 'Tan', '20 Jalan Bintang 2/3', 'Kelana Jaya',	47300, null);
+INSERT INTO cust VALUES ('C10',	'Mr', 60173321111,	'Jian Zhe', 'Chan' , '33 Jalan Jaya 1',	'Bangsar Baru',	59100, null);
+INSERT INTO cust VALUES ('C11',	'Ms', 60176899900,	'Hei Po', 'Ting', '23 Jalan BK 9/3', 'Kinrara',  47180, null);
+INSERT INTO cust VALUES ('C12',	'Ms', 60155677766,	'Wen Yi', 'Diong', '8 Jalan Setia Impian U13/7B', 'Setia Alam',	40150, null);
+INSERT INTO cust VALUES ('C13',	'Ms', 60124468899,	'Li Qian', 'Lam', '23 Jalan Equine 7/1D', 'Seri Kembangan',	43300, null);
+INSERT INTO cust VALUES ('C14',	'Mr', 60109894569,	'Yi Hong', 'Chin', '55 Jalan BK 12/2', 'Kinrara',  47180, null);
+INSERT INTO cust VALUES ('C15',	'Mr', 60187232255,	'Wen Ee', 'Kam', '24 Jalan Hujah Bubuk 5', 'Bukit Jalil', 57000, 'C07');
+INSERT INTO cust VALUES ('C16',	'Ms', 60177331234,	'Yi Jun', 'Chan', '50 Jalan Jaya 4/D', 'Subang Jaya', 47600, null);
+INSERT INTO cust VALUES ('C17',	'Ms', 60197899099,	'Qian Ting', 'Yeoh', '5 Jln P18c 1/3', 'Putrajaya',	62150, null);
+INSERT INTO cust VALUES ('C18',	'Mr', 60132246709,	'Kian Meng', 'Leong', '6 Jalan SB Indah 1/2', 'Seri Kembangan', 43300, null);
+INSERT INTO cust VALUES ('C19',	'Mr', 60125451120,	'Hong Yee',	'Lim', '22 Jalan Limau Besar 5', 'Klang', 40000, 'C20');
+INSERT INTO cust VALUES ('C20',	'Ms', 60176090088,	'Xin Yi', 'Tan', '12 Jalan Setia Impian U13/2F', 'Setia Alam', 40150, 'C19');
+
+CREATE TABLE outlet (
+    Outlet_num CHAR(3) PRIMARY KEY,
+    Telephone_no VARCHAR(11),
+    Street VARCHAR(50),
+    Suburb VARCHAR(20) CONSTRAINT csuburb CHECK(Suburb IN ('Damansara Utama','Bangsar Baru','Kelana Jaya','Shah Alam','Setia Alam','Klang','Subang Jaya')),
+    Postcode NUMBER(5)
+);
+
+INSERT INTO outlet VALUES ('OT1',60194736541, '14, Jalan Batai Laut 4, Taman Intan','Damansara Utama',47400);
+INSERT INTO outlet VALUES ('OT2',60152439476, '1, Jalan SS 21/1a, Damansara Utama','Bangsar Baru',59100);
+INSERT INTO outlet VALUES ('OT3',60184926490, '68, Jalan Pantai Baharu','Kelana Jaya',47300);
+INSERT INTO outlet VALUES ('OT4',60185639279, '66, Jalan Cyber Valley 1b/1','Shah Alam',40100);
+INSERT INTO outlet VALUES ('OT5',60184686426, '12, Jalan Merbah 2','Setia Alam',40170);
+INSERT INTO outlet VALUES ('OT6',60123425874, '2, Jalan 14/5, Seksyen 14','Klang',41050);
+INSERT INTO outlet VALUES ('OT7',60178656244, '19, Jalan 4/4c, Desa Melawati','Subang Jaya',47600);
+INSERT INTO outlet VALUES ('OT8',60177883457, '28, Jalan 1/2, Taman Sri Indah','Klang',41050);
+
+CREATE TABLE staff (
+    Staff_num CHAR(3) PRIMARY KEY,
+    Title CHAR(2) CHECK (Title IN ('Mr', 'Ms')),
+    Outlet_num CHAR(3),
+    Fname VARCHAR(10), 
+    Lname VARCHAR(10),
+    Phone_no VARCHAR(11),
+    Street VARCHAR(100),
+    Suburb VARCHAR(20),
+    Postcode NUMBER(5),
+    Position VARCHAR(20),
+    DOE Date,
+    DA VARCHAR(30),
+    FOREIGN KEY (Outlet_num) REFERENCES outlet(Outlet_num)
+);
+
+INSERT INTO staff VALUES ('S01',	'Mr',	'OT1',	'George', 'Chan', 60123456352,	'13, Jalan Tun Abdul Aziz',	'Kajang',	43000,	'Manager',	'25-JAN-2010', null);
+INSERT INTO staff VALUES ('S02',	'Mr',	'OT5', 'Brayn',	'Chung', 60183645823,	'1, Jalan Tiara 4',	'Klang',	41150,	'Waiter',	'29-JAN-2010',	'Issue warning letter');
+INSERT INTO staff VALUES ('S03',	'Mr',	'OT1',	'Kok Jing',	'Lim', 60128374528, '60, Jalan SS 14/1c',	'Subang Jaya',	47500,	'Telephone operator',	'31-JAN-2010',	'Temporary pay cut');
+INSERT INTO staff VALUES ('R04',	'Mr',	'OT1',	'Elon',	'Lee',	60183648502,	'56, Jalan Puteri 1/2',	'Shah Alam',	40170,	'Rider',	'12-FEB-2010',	null);
+INSERT INTO staff VALUES ('S05',	'Ms',	'OT2',	'Jane',	'Ling',	60193847562,	'38, Jalan Op 1/5',	'Puchong',	47100,	'Telephone operator',	'17-FEB-2011',	null);
+INSERT INTO staff VALUES ('R06',	'Mr',	'OT2',	'Ryan',	'Lim',	60192837465,	'101, Jalan Merbah',	'Puchong',	47100,	'Rider',	'3-JAN-2011',	'Issue warning letter');
+INSERT INTO staff VALUES ('S07',	'Mr',	'OT2',	'Elon',	'Teh',	60134295638,	'19, Lorong Wangsa Perkasa',	'Shah Alam',	40170,	'Waiter',	'6-JAN-2012',	null);
+INSERT INTO staff VALUES ('R08',	'Mr',	'OT3',	'Li Yang',	'Chan',	60193748923,	'26, Jalan Mendaling',	'Kajang',	43000,	'Rider',	'4-MAR-2012',	'Suspension');
+INSERT INTO staff VALUES ('S09',	'Mr',	'OT3',	'Raymond',	'Ching',	60192833239,	'1, Lorong PJU 7/10',	'Ampang',	68000,	'Manager',	'4-MAR-2013',	'Issue warning letter');
+INSERT INTO staff VALUES ('S10',	'Ms',	'OT3', 'Mary',	'Lee',	60145362539,	'64, Jalan Layang',	'Bangi',	43600,	'Telephone operator',	'26-JAN-2013',	'Temporary pay cut');
+INSERT INTO staff VALUES ('S11',	'Mr',	'OT4',	'Jason',	'Ling',	60192736907,	'25, Jalan SS 21/37',	'Subang Jaya',	47500,	'Waiter',	'27-JAN-2014',	'Temporary pay cut');
+INSERT INTO staff VALUES ('S12',	'Mr',	'OT4',	'Caleb',	'Tan',	60123354667,	'13, Jalan Tengah',	'Kajang',	43000,	'Telephone operator',	'17-APR-2014',	'Issue warning letter');
+INSERT INTO staff VALUES ('R13',	'Ms',	'OT4',	'Hannah',	'Yeoh',	60193747556,	'26, Jalan PJS 10/26',	'Shah Alam',	40170,	'Rider',	'18-APR-2015',	null);
+INSERT INTO staff VALUES ('S14',	'Mr',	'OT5',	'Peter',	'Bong',	60123344288,	'66, Jalan BU 4/11',	'Cheras',	43200,	'Waiter',	'1-MAY-2015',	'Temporary pay cut');
+INSERT INTO staff VALUES ('S15',	'Mr',	'OT5',	'Zhao Xuan',	'Wong',	60112009838,	'1, Jalan Kenari 1',	'Puchong',	47100,	'Manager',	'2-JUL-2016',	null);
+INSERT INTO staff VALUES ('R16',	'Ms',	'OT6',	'Zi Yi',	'Chan',	60183736849,	'12, Lorong PJS 10/26c',	'Petaling Jaya',	42000,	'Rider',	'3-JUL-2016',	'Temporary pay cut');
+INSERT INTO staff VALUES ('S17',	'Mr',	'OT6',	'Jin Han',	'Wong',	60138373639,	'53, Jalan Raja Haroun',	'Shah Alam',	40170,	'Telephone Operator',	'3-JUL-2016',	null);
+INSERT INTO staff VALUES ('S18',	'Ms',	'OT7',	'Mei Yin',	'Chin',	60182736452,	'23, Jalan Kenari 3',	'Puchong',	47100,	'Waiter',	'14-JAN-2017',	'Suspension');
+INSERT INTO staff VALUES ('S19',	'Mr',	'OT7',	'Johnny',	'Tan',	60152837392,	'35, Jalan Wawasan 1/4',	'Cyberjaya',	63000,	'Waiter',	'15-JAN-2017',	'Issue warning letter');
+INSERT INTO staff VALUES ('S20',	'Mr',	'OT7',	'Nick',	'Wong',	60182736484,	'475, Jalan PJS 10/22',	'Petaling Jaya',	42000,	'Waiter',	'31-JAN-2017',	'Temporary pay cut');
+INSERT INTO staff VALUES ('S21',	'Ms',	'OT8',	'Yong',	'Chole',	60182723784,	'45, Jalan PJS 10/22',	'Petaling Jaya',	42000,	'Waiter',	'31-JAN-2017',	'Temporary pay cut');
+INSERT INTO staff VALUES ('R22',	'Mr',	'OT8',	'Lebron',	'Steph',	60174592758,	'47, Jalan PJS BU 5/11',	'Cheras',	43200,	'Rider',	'31-JAN-2016',	'Temporary pay cut');
+INSERT INTO staff VALUES ('S23',	'Ms',	'OT8',	'Jestinna',	'Ting',	60182736484,	'67, Jalan PJS 10/24',	'Petaling Jaya',	42000,	'Telephone Operator',	'21-FEB-2017',	'Temporary pay cut');
+
+CREATE TABLE item (
+    Item_num VARCHAR(3) PRIMARY KEY,
+    Foodtype VARCHAR(30),
+    Price NUMBER(4,2) CONSTRAINT cprice CHECK(Price > 0),
+    Description CLOB
+);
+
+INSERT INTO item VALUES ('P01',	'Pepperoni Pizza',	 20.00,	'The Pepperoni Pizza, a beloved classic in the world of culinary delights, is an epitome of indulgence that tantalizes taste buds with its delectable flavors and comforting aromas. This pizza is a true masterpiece, artfully crafted to perfection, and renowned for its irresistible combination of ingredients that leave pizza enthusiasts yearning for more. At the heart of this culinary marvel lies a hand-tossed, thin crust, skillfully baked to achieve the ideal balance between crispiness and chewiness. The crust, kissed by the warmth of a traditional brick oven, boasts a delightful golden hue that signals its readiness to be adorned with a symphony of flavors. A generous slathering of rich, tangy tomato sauce forms the base of the Pepperoni Pizza. The sauce, a well-guarded secret recipe, strikes a harmonious balance between the sweetness of ripe tomatoes and the subtle tang of carefully selected herbs and spices. It imparts a robust flavor profile that elevates every other component of the pizza. For the final touch, a sprinkle of aromatic oregano and a drizzle of high-quality extra-virgin olive oil complete the Pepperoni Pizza, adding depth and an earthy note that brings the entire ensemble to culinary perfection. With every slice of Pepperoni Pizza, one embarks on a journey of culinary ecstasy - a symphony of textures and tastes that transport the senses to the bustling pizzerias of Naples, where this timeless classic first gained its fame. Whether enjoyed with friends, family, or savored in solitude, the Pepperoni Pizza transcends cultural boundaries and brings people together in a shared appreciation for the wonders of Italian gastronomy.');
+INSERT INTO item VALUES ('P02',	'Cheese Pizza',	20.00,	'Traditional pizza with a generous layer of melted cheese.');
+INSERT INTO item VALUES ('P03',	 'Hawaiian Pizza',	25.00,	'A tropical twist on pizza, combining ham, pineapple, and cheese.');
+INSERT INTO item VALUES ('P04',	'Chicken Pizza',	20.00,	'Delicious pizza topped with tender, flavorful chicken pieces.');
+INSERT INTO item VALUES ('P05',	'Tuna Pizza',	23.00,	'Unique pizza option featuring tuna, cheese, and tasty toppings.');
+INSERT INTO item VALUES ('P06',	'Vegetable Pizza',	18.00,	'A healthy choice with a variety of fresh vegetables and cheese.');
+INSERT INTO item VALUES ('P07',	'Cheese Burger',	8.00,	'Juicy beef patty with melted cheese, served in a bun.');
+INSERT INTO item VALUES ('P08',	'Chicken Burger',	7.00,	'Grilled or fried chicken served on a bun with toppings.');
+INSERT INTO item VALUES ('P09',	'Tuna Sandwich', 	5.00,	'A delightful sandwich filled with flaky tuna and condiments.');
+INSERT INTO item VALUES ('P10',	'Hashbrown',	5.00,	'Crispy fried shredded potatoes, perfect for breakfast or as a side.');
+INSERT INTO item VALUES ('P11',	'French Fries',	5.00,	'Classic, golden-brown potato fries, crispy and delicious.');
+INSERT INTO item VALUES ('P12',	'Fried Chicken',	8.00,	'Tender, juicy chicken coated in a crispy, flavorful batter.');
+INSERT INTO item VALUES ('P13',	'Ham',	5.00,	'Sliced ham, a versatile and delicious meat option.');
+INSERT INTO item VALUES ('P14',	'Nuggets',	6.00,	'Bite-sized pieces of breaded and fried chicken, perfect for snacking.');
+INSERT INTO item VALUES ('P15',	'Hot Chocolate',	7.00,	'Rich and creamy beverage made with cocoa and milk.');
+INSERT INTO item VALUES ('P16',	'Coke',	3.00,	'Classic carbonated soft drink, refreshing and sweet.');
+INSERT INTO item VALUES ('P17',	'Sprite',	3.00,	'Citrus-flavored carbonated beverage, known for its crisp taste.');
+INSERT INTO item VALUES ('P18',	'Orange Juice',	4.00,	'Freshly squeezed juice bursting with citrus goodness.');
+INSERT INTO item VALUES ('P19',	'Brownies',	10.00,	 'Indulgent chocolate squares with a fudgy, moist texture.');
+INSERT INTO item VALUES ('P20',	'Carrot Cake',	12.00,	'Moist and flavorful cake made with grated carrots and spices.');
+
+CREATE TABLE ord (
+    Order_num VARCHAR(10) PRIMARY KEY,
+    Outlet_num CHAR(3),
+    Staff_num CHAR(3) NULL,
+    Cust_num VARCHAR(3),
+    Odate DATE,
+    Otime DATE,
+    Tel_operator CHAR(3) NULL,
+    FOREIGN KEY (Cust_num) REFERENCES cust(Cust_num),
+    FOREIGN KEY (Staff_num) REFERENCES staff(Staff_num),
+    FOREIGN KEY (Outlet_num) REFERENCES outlet(Outlet_num), 
+    FOREIGN KEY (Tel_operator) REFERENCES staff(Staff_num)
+);
+
+-- This index is created on the "Cust_num" column, which stores the customer numbers associated with each order. 
+-- By using this index, the database can quickly locate and retrieve orders belonging to specific customers, making the search process more efficient.
+CREATE INDEX idx_cust_ord ON ord (Cust_num);
+
+INSERT INTO ord VALUES ('D01',	'OT5',	'S02',	'C01',	'25-JAN-2023',	TO_DATE('08:00:00', 'HH24:MI:SS')	, null);
+INSERT INTO ord VALUES ('D02',	'OT5',	'S14',	'C02',	'25-JAN-2023',	TO_DATE('08:30:00', 'HH24:MI:SS')	, null);
+INSERT INTO ord VALUES ('D03',	'OT1',	'R04',	'C07',	'25-JAN-2023',	TO_DATE('08:35:00', 'HH24:MI:SS')	, 'S03');
+INSERT INTO ord VALUES ('D04',	'OT5',	'S14',	'C09',	'25-JAN-2023',	TO_DATE('12:45:00', 'HH24:MI:SS')	, null);
+INSERT INTO ord VALUES ('D05',	'OT2',	'R06',	'C10',	'25-JAN-2023',	TO_DATE('16:20:00', 'HH24:MI:SS')	, null);
+INSERT INTO ord VALUES ('D06',	'OT2',	'R08',	'C06',	'26-JAN-2023',	TO_DATE('09:10:00', 'HH24:MI:SS')	, 'S10');
+INSERT INTO ord VALUES ('D07',	'OT6',	'R16',	'C18',	'26-JAN-2023',	TO_DATE('09:15:00', 'HH24:MI:SS')	, 'S17');
+INSERT INTO ord VALUES ('D08',	'OT7',	'S20',	'C20',	'26-JAN-2023',	TO_DATE('15:00:00', 'HH24:MI:SS')	, null);
+INSERT INTO ord VALUES ('D09',	'OT7',	'S18',	'C04',	'26-JAN-2023',	TO_DATE('16:40:00', 'HH24:MI:SS')	, null);
+INSERT INTO ord VALUES ('D10',	'OT2',	'R06',	'C11',	'26-JAN-2023',	TO_DATE('16:55:00', 'HH24:MI:SS')	, 'S05');
+INSERT INTO ord VALUES ('D11',	'OT3',	'R08',	'C07',	'26-JAN-2023',	TO_DATE('17:10:00', 'HH24:MI:SS')	, 'S10');
+INSERT INTO ord VALUES ('D12',	'OT7',	'S20',	'C16',	'27-JAN-2023',	TO_DATE('08:05:00', 'HH24:MI:SS')	, null);
+INSERT INTO ord VALUES ('D13',	'OT4',	'R13',	'C18',	'27-JAN-2023',	TO_DATE('08:40:00', 'HH24:MI:SS')	, 'S12');
+INSERT INTO ord VALUES ('D14',	'OT2',	'S07',	'C08',	'27-JAN-2023',	TO_DATE('08:45:00', 'HH24:MI:SS')	, null);
+INSERT INTO ord VALUES ('D15',	'OT6',	'R16',	'C16',	'27-JAN-2023',	TO_DATE('10:25:00', 'HH24:MI:SS')	, 'S17');
+INSERT INTO ord VALUES ('D16',	'OT4',	'S11',	'C13',	'27-JAN-2023',	TO_DATE('14:10:00', 'HH24:MI:SS')	, null);
+INSERT INTO ord VALUES ('D17',	'OT5',	'S14',	'C09',	'27-JAN-2023',	TO_DATE('15:20:00', 'HH24:MI:SS')	, null);
+INSERT INTO ord VALUES ('D18',	'OT8',	'R22',	'C03',	'27-JAN-2023',	TO_DATE('18:07:00', 'HH24:MI:SS')	,  'S23');
+INSERT INTO ord VALUES ('D19',	'OT3',	'R08',	'C01',	'28-JAN-2023',	TO_DATE('09:05:00', 'HH24:MI:SS')	, 'S10');
+INSERT INTO ord VALUES ('D20',	'OT2',	'S07',	'C15',	'28-JAN-2023',	TO_DATE('09:32:00', 'HH24:MI:SS')	, null);
+INSERT INTO ord VALUES ('D21',	'OT1',	'R04',	'C02',	'29-JAN-2023',	TO_DATE('18:07:00', 'HH24:MI:SS')	,  'S03');
+INSERT INTO ord VALUES ('D22',	'OT8',	'S21',	'C16',	'29-JAN-2023',	TO_DATE('09:32:00', 'HH24:MI:SS')	, null);
+INSERT INTO ord VALUES ('D23',	'OT8',	'S21',	'C04',	'30-JAN-2023',	TO_DATE('09:32:00', 'HH24:MI:SS')	, null);
+INSERT INTO ord VALUES ('D24',	'OT4',	'R13',	'C12',	'2-FEB-2023',	TO_DATE('08:40:00', 'HH24:MI:SS')	, 'S12');
+INSERT INTO ord VALUES ('D25',	'OT3',	'R08',	'C14',	'2-FEB-2023',	TO_DATE('08:40:00', 'HH24:MI:SS')	, 'S10');
+INSERT INTO ord VALUES ('D26',	'OT3',	'R08',	'C17',	'5-FEB-2023',	TO_DATE('08:40:00', 'HH24:MI:SS')	, 'S10');
+INSERT INTO ord VALUES ('D27',	'OT5',	'S14',	'C19',	'5-FEB-2023',	TO_DATE('08:40:00', 'HH24:MI:SS')	, null);
+
+ 
+CREATE TABLE ord_line (
+    CONSTRAINT PK_ord_line PRIMARY KEY (Order_num, Item_num),
+    Order_num VARCHAR(10),
+    Item_num VARCHAR(3),
+    Quantity NUMBER(2) CONSTRAINT cqty CHECK(Quantity > 0),
+    FOREIGN KEY (Order_num) REFERENCES ord(Order_num),
+    FOREIGN KEY (Item_num) REFERENCES item(Item_num)
+);
+
+
+INSERT INTO ord_line VALUES ('D01',	'P01',	1);
+INSERT INTO ord_line VALUES ('D01',	'P18',	1);
+INSERT INTO ord_line VALUES ('D02',	'P04',	2);
+INSERT INTO ord_line VALUES ('D02',	'P05',	1);
+INSERT INTO ord_line VALUES ('D02',	'P16',	1);
+INSERT INTO ord_line VALUES ('D03',	'P09',	2);
+INSERT INTO ord_line VALUES ('D04',	'P06',	1);
+INSERT INTO ord_line VALUES ('D04',	'P10',	4);
+INSERT INTO ord_line VALUES ('D05',	'P09',	2);
+INSERT INTO ord_line VALUES ('D05',	'P10',	3);
+INSERT INTO ord_line VALUES ('D05',	'P17',	2);
+INSERT INTO ord_line VALUES ('D06',	'P01',	1);
+INSERT INTO ord_line VALUES ('D06',	'P16',	1);
+INSERT INTO ord_line VALUES ('D07',	'P14',	2);
+INSERT INTO ord_line VALUES ('D08',	'P03',	6);
+INSERT INTO ord_line VALUES ('D08',	'P04',	2);
+INSERT INTO ord_line VALUES ('D08',	'P20',	4);
+INSERT INTO ord_line VALUES ('D09',	'P15',	1);
+INSERT INTO ord_line VALUES ('D09',	'P19',	1);
+INSERT INTO ord_line VALUES ('D10',	'P11',	2);
+INSERT INTO ord_line VALUES ('D11',	'P02',	5);
+INSERT INTO ord_line VALUES ('D12',	'P10',	3);
+INSERT INTO ord_line VALUES ('D13',	'P07',	2);
+INSERT INTO ord_line VALUES ('D14',	'P12',	2);
+INSERT INTO ord_line VALUES ('D15',	'P17',	1);
+INSERT INTO ord_line VALUES ('D16',	'P02',	2);
+INSERT INTO ord_line VALUES ('D17',	'P06',	5);
+
+CREATE TABLE rating (
+    Feedback_num INT PRIMARY KEY,
+    Staff_num CHAR(3),
+    Cust_num VARCHAR(8),
+    Rdate DATE,
+    Rating NUMBER(1) CONSTRAINT c_rating CHECK(Rating BETWEEN 1 AND 5),
+    FOREIGN KEY (Staff_num) REFERENCES staff(Staff_num),
+    FOREIGN KEY (Cust_num) REFERENCES cust(Cust_num)
+);
+
+INSERT INTO rating VALUES (101,	'S02',	'C01',	'25-JAN-2023',	1);
+INSERT INTO rating VALUES (102,	'R04',	'C07',	'25-JAN-2023',	2);
+INSERT INTO rating VALUES (103,	'S20',	'C20',	'26-JAN-2023',	4);
+INSERT INTO rating VALUES (104,	'S03',	'C06',	'4-FEB-2023',	1);
+INSERT INTO rating VALUES (105,	'S02',	'C04',	'5-FEB-2023',	5);
+INSERT INTO rating VALUES (106,	'S11',	'C01',	'10-FEB-2023',	2);
+INSERT INTO rating VALUES (107,	'S09',	'C05',	'14-FEB-2023',	3);
+INSERT INTO rating VALUES (108,	'S01',	'C05',	'14-FEB-2023',	5);
+INSERT INTO rating VALUES (109,	'S18',	'C17',	'14-FEB-2023',	4);
+INSERT INTO rating VALUES (110,	'S05',	'C13',	'16-FEB-2023',	5);
+INSERT INTO rating VALUES (111,	'S18',	'C07',	'27-FEB-2023',	2);
+INSERT INTO rating VALUES (112,	'S12',	'C18',	'2-MAR-2023',	1);
+INSERT INTO rating VALUES (113,	'R08',	'C19',	'11-MAR-2023',	3);
+INSERT INTO rating VALUES (114,	'R06',	'C01',	'18-MAR-2023',	5);
+INSERT INTO rating VALUES (115,	'R06',	'C18',	'19-MAR-2023',	2);
+INSERT INTO rating VALUES (116,	'S07',	'C01',	'20-MAR-2023',	2);
+INSERT INTO rating VALUES (117,	'S20',	'C20',	'23-MAR-2023',	5);
+INSERT INTO rating VALUES (118,	'S07',	'C13',	'29-MAR-2023',	4);
+INSERT INTO rating VALUES (119,	'R04',	'C12',	'2-APR-2023',	4);
+INSERT INTO rating VALUES (120,	'S05',	'C04',	'4-APR-2023',	3);
+INSERT INTO rating VALUES (121,	'S21',	'C04',	'4-APR-2023',	4);
+INSERT INTO rating VALUES (122,	'R22',	'C03',	'5-APR-2023',	5);
+INSERT INTO rating VALUES (123,	'S21',	'C16',	'6-APR-2023',	3);
+
+CREATE TABLE vehicle (
+    Vehicle_num VARCHAR(10) PRIMARY KEY,
+    Outlet_num CHAR(3),
+    Vproduct VARCHAR(25),
+    Type VARCHAR(20) CONSTRAINT ctype CHECK(Type IN ('Car', 'Motorcycle')),
+    Chassis_num NCHAR(17),
+    DOP DATE,
+    LCD DATE,
+    Mileage INT,
+    FOREIGN KEY (Outlet_num) REFERENCES outlet(Outlet_num)
+);
+
+INSERT INTO vehicle VALUES ('VPZ1982',	'OT1',	'Yamaha Mio Sporty',	'Motorcycle',	'JY2UAS001GA000456',	'25-May-2020',	'25-May-2021',	32320);
+INSERT INTO vehicle VALUES ('VKW2893',	'OT1',	'Perodua Axia',	'Car',	'MAH576898K9112322',	'3-Jun-2021',	'3-Jul-2023',	20921);
+INSERT INTO vehicle VALUES ('WTN7382',	'OT2',	'Honda Click 125i',	'Motorcycle',	'JF57E680003456789',	'8-Jul-2020',	'25-Jul-2022',	31244);
+INSERT INTO vehicle VALUES ('WPK2456',	'OT3',	'Yamaha Mio Sporty',	'Motorcycle',	'JY2UAS001GA001234',	'23-Jul-2020',	'13-Dec-2021',	31403);
+INSERT INTO vehicle VALUES ('VPW2364',	'OT4',	'Honda Dio',	'Motorcycle',	'JF17E550012345678',	'11-Sep-2020',	'14-Apr-2022',	30988);
+INSERT INTO vehicle VALUES ('WXL116',	'OT5',	'Yamaha Mio Sporty',	'Motorcycle',	'JY2UAS001GA004567',	'7-Jan-2021',	'23-Jan-2022',	22400);
+INSERT INTO vehicle VALUES ('BHA2122',	'OT5',	'Perodua Axia',	'Car',	'MAH576898K9158210',	'4-Mar-2021',	'24-Mar-2023',	20105);
+INSERT INTO vehicle VALUES ('BDF2033',	'OT6',	'Honda Click 125i',	'Motorcycle',	'JF57E680005432101',	'29-Jun-2021',	'21-Aug-2022',	18930);
+INSERT INTO vehicle VALUES ('WTH1234',	'OT7',	'Yamaha Mio Sporty',	'Motorcycle',	'JY2UAS001GA006890',	'18-Jan-2022',	'20-Feb-2023',	13220);
+INSERT INTO vehicle VALUES ('WWA8672',	'OT7',	'Honda Dio',	'Motorcycle',	'JF17E550023456789',	'10-May-2022',	'12-Jul-2023',	10460);
+INSERT INTO vehicle VALUES ('BIT6849',	'OT8',	'Honda Civic',	'Car',	'J05E73F9256817743',	'11-Sep-2022',	'12-Jul-2023',	20580);
+INSERT INTO vehicle VALUES ('VRV9548',	'OT8',	'Honda Dio',	'Motorcycle',	'FJ505E61743238975',	'10-Sep-2022',	'12-Jul-2023',	11480);
+
+
+
+CREATE TABLE edetails (
+    Ev_num CHAR(3) PRIMARY KEY,
+    Ev_name VARCHAR(30),
+    Description VARCHAR(50)
+);
+
+INSERT INTO edetails VALUES ('E01',	'Hari Raya Aidilfitri',	'Buy 2 pizza and get a free gift');
+INSERT INTO edetails VALUES ('E02',	'Chinese New Year',	'40% off for all items in menu');
+INSERT INTO edetails VALUES ('E03',	'Deepavali',	'Every pizza ordered served with free snacks');
+INSERT INTO edetails VALUES ('E04',	'National Day',	'Visitor who shout "Merdeka" get a free drink');
+INSERT INTO edetails VALUES ('E05',	'Malaysia Day',	'Up to 70% off with minimum spend RM100');
+INSERT INTO edetails VALUES ('E06',	'Christmas Day',	'Customer who dine in get lucky draw');
+INSERT INTO edetails VALUES ('E07',	'30th Year Business Anniversary',	'Buy 1 pizza free 1 pizza');
+INSERT INTO edetails VALUES ('E08',	'Valentines Day',	'Husband and Wife get a free dessert');
+
+CREATE TABLE econduct (
+    CONSTRAINT PK_econduct PRIMARY KEY (Ev_num, Edate, Outlet_num),
+    Ev_num CHAR(3),
+    Edate DATE,
+    Outlet_num CHAR(3),
+    FOREIGN KEY (Outlet_num) REFERENCES outlet(Outlet_num),
+    FOREIGN KEY (Ev_num) REFERENCES edetails(Ev_num)
+);
+
+
+-- The "idx_ec_outlet" index is designed for the "Outlet_num" column, which represents the outlet number associated with each event conduct record. 
+-- With this index, the database can swiftly identify, and filter event conduct records related to a particular outlet, leading to improved query performance.
+CREATE INDEX idx_ec_outlet ON econduct(Outlet_num);
+
+INSERT INTO econduct VALUES ('E02',	'10-Feb-2023',	'OT5');
+INSERT INTO econduct VALUES ('E02',	'11-Feb-2023',	'OT6');
+INSERT INTO econduct VALUES ('E02',	'12-Feb-2023',	'OT7');
+INSERT INTO econduct VALUES ('E08',	'14-Feb-2023',	'OT1');
+INSERT INTO econduct VALUES ('E01',	'25-Apr-2023',	'OT2');
+INSERT INTO econduct VALUES ('E01',	'26-Apr-2023',	'OT2');
+INSERT INTO econduct VALUES ('E01',	'27-Apr-2023',	'OT3');
+INSERT INTO econduct VALUES ('E01',	'28-Apr-2023',	'OT4');
+INSERT INTO econduct VALUES ('E03',	'25-Jun-2023',	'OT1');
+INSERT INTO econduct VALUES ('E03',	'26-Jun-2023',	'OT2');
+INSERT INTO econduct VALUES ('E04',	'30-Aug-2023',	'OT3');
+INSERT INTO econduct VALUES ('E04',	'31-Aug-2023',	'OT8');
+INSERT INTO econduct VALUES ('E05',	'15-Sep-2023',	'OT4');
+INSERT INTO econduct VALUES ('E05',	'16-Sep-2023',	'OT6');
+INSERT INTO econduct VALUES ('E06',	'24-Dec-2023',	'OT5');
+INSERT INTO econduct VALUES ('E06',	'25-Dec-2023',	'OT4');
+INSERT INTO econduct VALUES ('E07',	'28-Dec-2023',	'OT1');
+INSERT INTO econduct VALUES ('E07',	'29-Dec-2023',	'OT8');
+INSERT INTO econduct VALUES ('E07',	'30-Dec-2023',	'OT2');
+INSERT INTO econduct VALUES ('E07',	'31-Dec-2023',	'OT3');
+
+
+-- Create views
+CREATE OR REPLACE VIEW vw_serve AS
+SELECT o.Order_num AS "Order", s.Staff_num StaffID, s.Lname || ' ' ||s.Fname AS staff_name, s.Position, c.Cust_num CustID,  c.Lname || ' ' || c.Fname AS Cust_name, c.Street || ' ' || c.Suburb || ' ' || c.Postcode AS Cust_address
+FROM staff s, cust c, ord o
+WHERE s.Staff_num = o.Staff_num
+AND o.Cust_num = c.Cust_num
+ORDER BY o.Order_num;
+
+
+CREATE OR REPLACE VIEW vw_married AS
+SELECT m.cust_num CustID, m.title Title, m.Lname ||' '|| m.Fname AS Surname, 'has married to' AS "and",
+f.cust_num SpouseID, f.title Spouse_Title, f.Lname||' '|| f.Fname  Spouse_Surname
+FROM cust m ,cust f
+WHERE m.Married_to = f.cust_num
+ORDER BY CustID
